@@ -1,12 +1,60 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Oct  2 13:47:48 2015
-
-@author: GILLES Armand
-"""
 
 import pandas as pd
 import glob
+
+#Variable		Type	Label
+#Communes		Char	NOM DE LA COMMUNE
+#Codes_Insee		Char	NUMERO DE LA COMMUNE, CODE INSEE
+#NB_Pers_Couv_Al		Num	NOMBRE DE PERSONNES COUVERTES PAR UNE AIDE AU LOGEMENT VERSABLE
+#Pers_Couv_Al_ALF	Num	NOMBRE DE PERSONNES COUVERTES PAR ALF VERSABLE
+#Pers_Couv_Al_ALS	Num	NOMBRE DE PERSONNES COUVERTES PAR ALS VERSABLE
+#Pers_Couv_Al_APL	Num	NOMBRE DE PERSONNES COUVERTES PAR APL VERSABLE
+#
+#
+#***********REMARQUES***********
+#
+#1)Le foyer allocataire est composé du responsable du dossier (personne qui perçoit au moins une prestation au regard de sa situation
+#familiale et/ou monétaire), et l'ensemble des autres ayants droit au sens de la règlementation en vigueur (conjoint, enfant(s) et
+#autre(s) personne(s) à charge).
+#Plusieurs foyers allocataires peuvent cohabiter dans un même lieu, ils constituent alors un seul ménage au sens de la définition
+#statistique Insee. C’est le cas, par exemple, lorsque un couple perçoit des allocations logement et héberge son enfant titulaire d'un
+#minimum social des Caf (RSO, RSA, AAH).
+#En pratique, le terme "allocataire" est souvent utilisé à la place de "foyer allocataire".
+#
+#2) Le droit versable signifie que le foyer allocataire remplit toutes les conditions pour être effectivement payé au titre du mois
+#d’observation. En particulier ne sont pas inclus dans ce périmètre les bénéficiaires qui n’ont pas fourni l’intégralité de leurs
+#pièces justificatives, ou ceux dont le montant de la prestation est inférieur au seuil de versement.
+#
+#3) Le champ géographique d’observation du jeu de données correspond à la commune de résidence du foyer allocataire telle qu’elle
+#est enregistrée dans le fichier statistique des allocataires extrait début d’année N+1 et ce quelle que soit la Caf de gestion.
+#La première ligne du fichier dont le numéro commune est XXXXX recouvre deux cas possibles soit un code commune inconnu soit une
+#commune de résidence de l'allocataire à l'étranger.
+#A partir de 2014 les résidants à l'étranger et les codes communes inconnus sont dissociés en deux lignes.
+#
+#4) L'application d'un blanc ' ' est dû à deux cas de figure soit l'information est manquante, soit il y a eu application d'un secret
+#statistique. Le secret statistique est appliqué à toutes les valeurs inférieures à 5. De plus, pour éviter de déduire certaines
+#valeurs manquantes d'autres valeurs par croisement (exemple, différence avec la totalité dans le cas d'une seule valeur manquante), un
+#secret statistique est appliqué sur d'autres valeurs.
+#
+#***********Titres des fichiers***********
+#
+#LOG_Perscouv_Presta_Com_XXXX.csv
+#où XXXX est l'année de référence
+#
+#***********Informations additionnelles***********
+#
+#Source : Cnaf, fichier FILEAS et BASE COMMUNALE ALLOCATAIRES (BCA)
+#Fréquence de diffusion : Annuelle
+#Granularité temporelle : Mois
+#Unité : Personnes couvertes
+#Champ : France, régime général + régime agricole dans les Dom
+#Zone géographique : Commune
+#
+#
+#***********LIENS***********
+#
+#Retrouvez plus d'informations sur le site de la branche famille: https://www.caf.fr/aides-et-services/s-informer-sur-les-aides/logement-et-cadre-de-vie
 
 df = pd.read_csv('source/LOGPersPrestaCom2009.csv', sep=";")
 

@@ -36,7 +36,7 @@ def reduce_shape(shapes):
 
 pd.options.mode.chained_assignment = None # No warning on SettingWithCopyWarning
 
-commune_insee = pd.read_csv("source/commune_insee.csv", sep=";", converters={'geo_shape':CustomParser})
+commune_insee = pd.read_csv("../source/commune_insee.csv", sep=";", converters={'geo_shape':CustomParser})
 
 commune_insee.columns = ['Codes_Insee', 'Code_Postal', 'Commune', 'Departement', 'Region',
                          'Statut', 'Altitude_Moyenne', 'Superficie', 'Population',
